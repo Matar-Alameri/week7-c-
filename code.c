@@ -20,6 +20,9 @@ int main()
     char choice;
     int counter = 0;
     float mean = 0;
+    char c;
+    int a, i;
+    float max;
 
     while (1)
     {
@@ -86,7 +89,28 @@ int main()
 
         case 'C':
         case 'c':
-            return 0;
+            counter = 0;
+            while (fgets(line, buffer_size, input))
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+            while ((c = fgetc(input)) !=EOF)
+            {
+                if(c =='\n')
+                
+                for (a = 0; a <  counter; a++){
+                    if (a > max){
+                        max = a;
+                        printf("%s - Blood iron: %.1f\n", daily_readings[a].date, daily_readings[a].bloodIron);
+                    }
+                counter++;
+                }
+
+            }
+            fclose(input);
             break;
 
         case 'D':
