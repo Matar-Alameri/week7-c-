@@ -1,5 +1,28 @@
 #include "utilities.h"
 
+void high_blood(FILE * input){
+    char line[buffer_size];
+    int counter = 0,i=0;
+    float maxblood=0,current;
+    reading daily_readings[100];
+        while (fgets(line, buffer_size, input)!=NULL)
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                //counter++;
+            
+       // while(fgets(line,buffer_size,input)!=NULL){
+                current = daily_readings[counter].bloodIron;
+                if(current>maxblood){
+                    maxblood=current;
+                    i = counter;
+                }
+                counter++;
+            }
+            printf("%s - Blood iron: %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron); 
+}
+
 int main()
 {
     // array of daily readings
@@ -21,8 +44,9 @@ int main()
     int counter = 0;
     float mean = 0;
     char c;
-    int a, i;
-    float max;
+    int a, i,n, arr[20];
+    double current;
+    int max=0, min = 0;
 
     while (1)
     {
@@ -68,6 +92,7 @@ int main()
             {
                 printf("%s - Blood iron: %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron);
             }
+            
             fclose(input);
             break;
 
@@ -97,25 +122,24 @@ int main()
                 tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
                 counter++;
             }
-            while ((c = fgetc(input)) !=EOF)
-            {
-                if(c =='\n')
-                
-                for (a = 0; a <  counter; a++){
-                    if (a > max){
-                        max = a;
-                        printf("%s - Blood iron: %.1f\n", daily_readings[a].date, daily_readings[a].bloodIron);
-                    }
-                counter++;
+            while(fgets(line,buffer_size,input)!=NULL){
+                current = atof(line);
+                if(counter==0){
+                    min=current;
                 }
-
+                else if(current<max){
+                    min=current;
+                }
+                counter++;
             }
+            printf("w");
             fclose(input);
             break;
-
         case 'D':
         case 'd':
-            return 0;
+            high_blood(input);
+         
+            fclose(input);
             break;
 
         case 'E':
