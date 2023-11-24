@@ -22,6 +22,29 @@ void high_blood(FILE * input){
             }
             printf("%s - Blood iron: %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron); 
 }
+void low_blood(FILE *input){
+    char line[buffer_size];
+    int counter = 0,i=0;
+    float minblood=100,current;
+    reading daily_readings[100];
+        while (fgets(line, buffer_size, input)!=NULL)
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                //counter++;
+            
+       // while(fgets(line,buffer_size,input)!=NULL){
+                current = daily_readings[counter].bloodIron;
+                if(current<minblood){
+                    minblood=current;
+                    i = counter;
+                }
+                counter++;
+            }
+            printf("%s - Blood iron: %.1f\n", daily_readings[i].date, daily_readings[i].bloodIron); 
+}
+
 
 int main()
 {
@@ -114,25 +137,9 @@ int main()
 
         case 'C':
         case 'c':
-            counter = 0;
-            while (fgets(line, buffer_size, input))
-            {
-                // split up the line and store it in the right place
-                // using the & operator to pass in a pointer to the bloodIron so it stores it
-                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
-                counter++;
-            }
-            while(fgets(line,buffer_size,input)!=NULL){
-                current = atof(line);
-                if(counter==0){
-                    min=current;
-                }
-                else if(current<max){
-                    min=current;
-                }
-                counter++;
-            }
-            printf("w");
+            low_blood(input);
+                
+            
             fclose(input);
             break;
         case 'D':
